@@ -48,3 +48,32 @@ int get_value(int index){
     return values[index];
 }
 
+void evaluate_gate(Gate *gate){
+    int input1 = 0;
+    int input2 = 0;
+    if(gate->type == AND){
+        input1 = get_value(gate->inputs[0]);
+        input2 = get_value(gate->inputs[1]);
+        if(input1 == 1 && input2 == 1){
+            values[gate->output] = 1;
+        }else{
+            values[gate->output] = 0;
+        }
+    }else if(gate->type == OR){
+        input1 = get_value(gate->inputs[0]);
+        input2 = get_value(gate->inputs[1]);
+        if(input1 == 1 || input2 == 1){
+            values[gate->output] = 1;
+        }else{
+            values[gate->output] = 0;
+        }
+    }else if(gate->type == NAND){
+        input1 = get_value(gate->inputs[0]);
+        input2 = get_value(gate->inputs[1]);
+        if(input1 == 1 && input2 == 1){
+            values[gate->output] = 0;
+        }else{
+            values[gate->output] = 1;
+        }
+    }
+}
