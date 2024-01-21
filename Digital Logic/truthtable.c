@@ -75,5 +75,54 @@ void evaluate_gate(Gate *gate){
         }else{
             values[gate->output] = 1;
         }
-    }
+    }else if(gate->type == NOR){
+        input1 = get_value(gate->inputs[0]);
+        input2 = get_value(gate->inputs[1]);
+        if(input1 == 1 || input2 == 1){
+            values[gate->output] = 0;
+        }else{
+            values[gate->output] = 1;
+        }
+    }else if(gate->type == XOR){
+        input1 = get_value(gate->inputs[0]);
+        input2 = get_value(gate->inputs[1]);
+        if((input1 == 1 && input2 == 0) || (input1 == 0 && input2 == 1)){
+            values[gate->output] = 1;
+        }else{
+            values[gate->output] = 0;
+        }
+    }else if(gate->type == NOT){
+        input1 = get_value(gate->inputs[0]);
+        if((!input1) == 1){
+            values[gate->output] = 1;
+        }else{
+            values[gate->output] = 0;
+        }
+    }else if(gate->type == PASS){
+        input1 = get_value(gate->inputs[0]);
+        if(input1 == 1){
+            values[gate->output] = 1;
+        }else{
+            values[gate->output] = 0;
+        }
+    }else if(gate->type == DECODER){
+        int index = 0;
+        for(int x = 0; x < gate->size; x++){
+            index = (index * 2) + get_value(gate->inputs[x]);
+        }
+        for (int x = 0; x < (1 << gate->size); x++) {
+            if(index == x){
+                values[gate->outputs[x]] = 1;
+            }else{
+                values[gate->outputs[x]] = 0;
+            }
+        }
+    }else if(gate->type == MULTIPLEXER){
+        int sel = 0;
+        for(int x = 0; x < gate->size; x++){
+            sel = (sel * 2) + get_value(gate->inputs[(1 << gate->size)+x]);
+        }
+        values[gate->output] = get_value(gate->inputs[sel]);
+    }     
 }
+
