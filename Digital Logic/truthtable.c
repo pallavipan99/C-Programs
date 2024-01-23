@@ -126,3 +126,26 @@ void evaluate_gate(Gate *gate){
     }     
 }
 
+void truth_table(int num){
+    if(num == num_inputs){
+        for(int x = 0; x < num_inputs; x++){
+            printf("%d ", values[input_variables[x]]);
+        } 
+        printf("| ");
+        for(int x = 0; x < num_gates; x++){
+            evaluate_gate(&gates[x]);
+        } 
+        for(int x = 0; x < num_outputs; x++){
+            printf("%d", values[output_variables[x]]);
+            if(x < (num_outputs-1)){
+                printf(" ");
+            } 
+        }
+        printf("\n");
+        return;
+    }
+    values[input_variables[num]] = 0;
+    truth_table(num + 1);
+    values[input_variables[num]] = 1;
+    truth_table(num + 1);
+}
